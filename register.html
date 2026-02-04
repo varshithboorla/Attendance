@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance Register</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <style>
+    /* Modern Reset */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+      padding: 24px;
+      margin: 0;
+      min-height: 100vh;
+      color: #334155;
+    }
+
+    .container {
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 700;
+      margin-bottom: 32px;
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.02em;
+    }
+
+    /* Enhanced Wrapper */
+    .wrapper {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
+      box-shadow: 
+        0 20px 60px rgba(0,0,0,0.1),
+        0 1px 3px rgba(0,0,0,0.05);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .wrapper::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), transparent);
+    }
+
+    /* Scroll Container */
+    .scroll-container {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: #cbd5e1 transparent;
+    }
+
+    .scroll-container::-webkit-scrollbar {
+      height: 10px;
+    }
+
+    .scroll-container::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .scroll-container::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 10px;
+      border: 2px solid transparent;
+      background-clip: content-box;
+    }
+
+    .scroll-container::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    /* Table Styles - Same Structure */
+    table {
+      border-collapse: collapse;
+      min-width: 1000px;
+      width: 100%;
+      font-size: 15px;
+    }
+
+    th, td {
+      padding: 16px 16px;
+      border: 2px solid #e2e8f0;
+      text-align: center;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    /* Enhanced Sticky Headers */
+    th {
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      font-weight: 600;
+      color: #1e293b;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    /* Enhanced Sticky First Column */
+    td:first-child,
+    th:first-child {
+        position: static !important;
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        font-weight: 700;
+        text-align: left;
+    }
+
+
+    /* Status Enhancements */
+    .P {
+      color: #059669;
+      font-weight: 700;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(34, 197, 94, 0.1));
+      border-radius: 8px;
+      padding: 6px 12px;
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+      transition: all 0.3s ease;
+      font-size: 15px;
+    }
+
+    .P:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    .A {
+      color: #dc2626;
+      font-weight: 700;
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(248, 113, 113, 0.1));
+      border-radius: 8px;
+      padding: 6px 12px;
+      box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
+      transition: all 0.3s ease;
+      font-size: 15px;
+    }
+
+    .A:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    }
+    .PA {
+      color: #b45309; /* dark orange text */
+      font-weight: 700;
+      background: linear-gradient(
+        135deg,
+        rgba(251, 191, 36, 0.25),
+        rgba(245, 158, 11, 0.15)
+      );
+      border-radius: 8px;
+      padding: 6px 12px;
+      box-shadow: 0 2px 8px rgba(245, 158, 11, 0.35);
+      font-size: 15px;
+    }
+    
+    .PA:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.45);
+    }
+
+    .NA {
+      color: #64748b;
+      font-style: italic;
+      font-weight: 500;
+    }
+
+    /* Hover Row Effects */
+    tbody tr {
+      transition: all 0.2s ease;
+    }
+
+    tbody tr:hover {
+      background: rgba(59, 130, 246, 0.03);
+      transform: scale(1.01);
+    }
+
+    tbody tr:hover td:first-child {
+      background: linear-gradient(135deg, #eff6ff, #dbeafe) !important;
+    }
+
+    /* Mobile Optimizations */
+    @media (max-width: 1024px) {
+      body {
+        padding: 16px;
+      }
+      
+      table {
+        min-width: 800px;
+      }
+      
+      th, td {
+        padding: 12px 10px;
+        font-size: 14px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 12px;
+        font-size: 14px;
+      }
+      
+      h2 {
+        margin-bottom: 24px;
+      }
+      
+      .wrapper {
+        border-radius: 16px;
+        margin: 0;
+      }
+      
+      table {
+        min-width: 700px;
+      }
+      
+      th, td {
+        padding: 12px 8px;
+        font-size: 13px;
+      }
+      
+      td:first-child,
+      th:first-child {
+        min-width: 160px;
+        padding-left: 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .scroll-container {
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      table {
+        min-width: 650px;
+      }
+    }
+
+    /* Empty State */
+    .empty-state {
+      padding: 80px 40px;
+      text-align: center;
+      color: #64748b;
+      font-size: 16px;
+    }
+
+    .empty-state::before {
+      content: '📋';
+      display: block;
+      font-size: 4rem;
+      margin-bottom: 20px;
+      opacity: 0.5;
+    }
+
+    /* Animations */
+    .wrapper {
+      animation: slideUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Loading shimmer */
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>Attendance Register</h2>
+    <button id="openTimetableBtn"
+      style="
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        z-index: 9999;
+        padding: 10px 16px;
+        border-radius: 10px;
+        border: none;
+        background: #4f46e5;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+      ">
+      📅 Timetable
+    </button>
+
+    <div id="timetablePopup"
+      style="
+        display:none;
+        position:fixed;
+        inset:0;
+        background:rgba(0,0,0,0.5);
+        z-index:10000;
+        align-items:center;
+        justify-content:center;
+      ">
+      <div style="
+        background:white;
+        width:90%;
+        max-width:1100px;
+        max-height:90vh;
+        overflow:auto;
+        padding:20px;
+        border-radius:16px;
+      ">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <h3>📅 Weekly Timetable</h3>
+          <button onclick="closeTimetable()">✖</button>
+        </div>
+        <div id="timetableContent"></div>
+      </div>
+    </div>
+
+    <div class="wrapper">
+      <div class="scroll-container">
+        <table id="registerTable"></table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+const table = document.getElementById("registerTable");
+
+// Load cached register data
+const records = JSON.parse(
+  sessionStorage.getItem("attendance_register") || "[]"
+);
+
+if (records.length === 0) {
+  table.innerHTML =
+    '<tr><td colspan="100%" class="empty-state">No attendance data available</td></tr>';
+} else {
+  buildRegister(records);
+}
+
+function buildRegister(records) {
+  // ✅ UNIQUE SUBJECTS → COLUMNS
+  const subjects = [...new Set(records.map(r => r.subject))].sort();
+
+  // ✅ UNIQUE DATES → ROWS
+  const dates = [...new Set(records.map(r => r.date))]
+    .sort((a, b) => parseDate(b) - parseDate(a)); // newest first
+
+  /**
+   * Matrix:
+   * map[date][subject] = { total, present }
+   */
+  const map = {};
+  dates.forEach(d => {
+    map[d] = {};
+    subjects.forEach(s => {
+      map[d][s] = { present: 0, absent: 0 };
+    });
+  });
+
+  // Accumulate attendance
+  records.forEach(r => {
+    const cell = map[r.date][r.subject];
+    if (r.status === "P") cell.present += 1;
+    if (r.status === "A") cell.absent += 1;
+  });
+
+  // =========================
+  // BUILD TABLE
+  // =========================
+
+  // Header row
+  let html = "<thead><tr><th>Date</th>";
+  subjects.forEach(s => html += `<th>${s}</th>`);
+  html += "</tr></thead><tbody>";
+
+  // Date rows
+  dates.forEach(date => {
+    html += `<tr><td>${date}</td>`;
+
+   subjects.forEach(sub => {
+      const { present, absent } = map[date][sub];
+    
+      let parts = [];
+      let cls = "NA";
+    
+      const isMixed = present > 0 && absent > 0;
+    
+      // Present text
+      if (present > 0) {
+        parts.push(
+          isMixed || present > 1 ? `P(${present})` : "P"
+        );
+      }
+    
+      // Absent text (🔥 ALWAYS show count if mixed)
+      if (absent > 0) {
+        parts.push(
+          isMixed ? `A(${absent})` : (absent > 1 ? `A(${absent})` : "A")
+        );
+      }
+    
+      // Cell color
+      if (isMixed) {
+        cls = "PA";   // 🟠 Orange
+      } else if (present > 0) {
+        cls = "P";    // 🟢 Green
+      } else if (absent > 0) {
+        cls = "A";    // 🔴 Red
+      }
+    
+      const text = parts.length ? parts.join(" ") : "-";
+      html += `<td class="${cls}">${text}</td>`;
+    });
+
+
+    html += "</tr>";
+  });
+
+  html += "</tbody>";
+  table.innerHTML = html;
+}
+
+document.getElementById("openTimetableBtn").onclick = () => {
+  const popup = document.getElementById("timetablePopup");
+  const container = document.getElementById("timetableContent");
+
+  const timetable = JSON.parse(
+    sessionStorage.getItem("weekly_timetable") || "[]"
+  );
+
+  if (!timetable.length) {
+    container.innerHTML = "<p>No timetable available</p>";
+    popup.style.display = "flex";
+    return;
+  }
+
+  let html = `
+    <table border="1" width="100%" cellpadding="8">
+      <tr>
+        <th>Day</th>
+        <th>P1</th><th>P2</th><th>P3</th>
+        <th>P4</th><th>P5</th><th>P6</th>
+      </tr>
+  `;
+
+  timetable.forEach(r => {
+    if (
+      r.day.toLowerCase().includes("period") ||
+      r.day.toLowerCase().includes("lunch") ||
+      r.day.toLowerCase().includes("s.no")
+    ) return;
+
+    html += `<tr><td><b>${r.day}</b></td>`;
+    for (let i = 0; i < 6; i++) {
+      html += `<td>${r.periods[i] || "-"}</td>`;
+    }
+    html += "</tr>";
+  });
+
+  html += "</table>";
+  html += renderSubjectsDetails();
+  container.innerHTML = html;
+  popup.style.display = "flex";
+};
+const popup = document.getElementById("timetablePopup");
+
+popup.addEventListener("click", (e) => {
+  // Close ONLY if user clicks on the dark overlay
+  if (e.target === popup) {
+    closeTimetable();
+  }
+});
+
+function closeTimetable() {
+  document.getElementById("timetablePopup").style.display = "none";
+}
+function renderSubjectsDetails() {
+  const subjects = JSON.parse(
+    sessionStorage.getItem("timetable_subjects") || "[]"
+  );
+
+  if (!subjects.length) {
+    return "<p>No subject details available</p>";
+  }
+
+  let html = `
+    <h3 style="margin-top:24px;">📘 Subject Details</h3>
+    <table width="100%" cellpadding="8" cellspacing="0"
+      style="border-collapse:collapse; margin-top:12px;">
+      <thead>
+        <tr style="background:#f1f5f9;">
+          <th>S.No</th>
+          <th>Subject Code</th>
+          <th>Short Code</th>
+          <th>Subject Name</th>
+          <th>Faculty</th>
+          <th>Staff ID</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  subjects.forEach(s => {
+    html += `
+      <tr>
+        <td>${s.sno || "-"}</td>
+        <td><b>${s.subjectCode || "-"}</b></td>
+        <td>${s.shortCode || "-"}</td>
+        <td>${s.subjectName || "-"}</td>
+        <td>${s.staffName || "-"}</td>
+        <td>${s.staffId || "-"}</td>
+      </tr>
+    `;
+  });
+
+  html += "</tbody></table>";
+  return html;
+}
+function parseDate(d) {
+  // Converts "10 Jan 2026" → Date object
+  return new Date(d.replace(/(\d{2}) (\w{3}) (\d{4})/, "$2 $1, $3"));
+}
+
+
+</script>
+
+</body>
+</html>
