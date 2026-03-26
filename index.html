@@ -6,11 +6,6 @@
 <title>Attendance Dashboard</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-
-<!-- <script>(function(s){s.dataset.zone='10484362',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script> -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8100849139277559"
-     crossorigin="anonymous"></script> 
-<!-- <script>(function(s){s.dataset.zone='10533741',s.src='https://gizokraijaw.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>       -->
 <style>
 :root {
   /* Modern Color Palette */
@@ -1095,6 +1090,38 @@ body[data-theme="dark"] .table-wrapper th {
 #timetablePopup {
   overflow: hidden;
 }
+a {
+  text-decoration: none;
+  color: inherit;
+}
+/* Button Loading State */
+/* Bulletproof Centered Loader */
+.btn.is-loading {
+  position: relative !important;
+  color: transparent !important; /* Hides the text */
+  pointer-events: none;
+}
+
+/* Hides any inside elements like icons temporarily */
+.btn.is-loading * {
+  visibility: hidden; 
+}
+
+/* Draws the spinner exactly in the center */
+.btn.is-loading::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  transform: translate(-50%, -50%);
+  width: 18px;
+  height: 18px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid #ffffff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  visibility: visible;
+}
 </style>
 </head>
 <body>
@@ -1131,6 +1158,18 @@ body[data-theme="dark"] .table-wrapper th {
       <h3>Student Login</h3>
       <p>Enter your credentials to view your attendance</p>
     </div>
+    <div style="text-align:center; margin-bottom:20px;">
+      <a href="/Attendance.apk" download
+         onclick="setTimeout(() => {
+           document.getElementById('apkFallbackPopup').style.display='flex';
+         }, 500);">
+         
+        <button class="btn" style="width:100%;">
+          Download Attendance App (APK) Version 1.0.4
+        </button>
+        
+      </a>
+    </div>
 
     <form id="loginForm" autocomplete="on">
       <div class="field">
@@ -1165,45 +1204,6 @@ body[data-theme="dark"] .table-wrapper th {
     </form>
     
   </div>
-  <!-- Public Content For AdSense (Below Login) -->
-<section id="publicContent" style="margin-top:500px;">
-  <div class="card">
-    <div class="card-body">
-
-      <h1>Student Attendance Dashboard</h1>
-
-      <p>
-        Student Attendance Dashboard is a free online tool that helps students track, analyze, and predict their academic and biometric attendance in an easy and visual way.
-      </p>
-
-      <h2>📊 What This Website Does</h2>
-      <ul>
-        <li>Shows your subject-wise attendance</li>
-        <li>Calculates overall attendance percentage</li>
-        <li>Shows how many classes you can bunk</li>
-        <li>Shows how many classes you must attend to reach 75%</li>
-        <li>Provides biometric attendance analysis</li>
-        <li>Shows Time Table and Attendance Register</li>
-        <li>Simulates future attendance</li>
-      </ul>
-
-      <h2>🎯 Why This Is Useful</h2>
-      <p>
-        This tool helps you plan your attendance smartly and stay above the required limit.
-      </p>
-
-      <h2>🔐 Your Data Is Safe</h2>
-      <p>
-        Your login data is used only to fetch attendance from the college server.
-      </p>
-
-      <p style="margin-top:20px; font-weight:600;">
-        👉 Scroll up and login to access your dashboard.
-      </p>
-
-    </div>
-  </div>
-</section>
 
   <div id="skeletonLoader" class="skeleton-container" style="display:none;">
     <div class="skeleton-card"></div>
@@ -1222,7 +1222,7 @@ body[data-theme="dark"] .table-wrapper th {
       </button>
     </div>
      <div style="margin-bottom:24px;">
-       <button id="openTimetableBtn" class="btn" style="width:100%; display:block;">
+       <button id="openTimetableBtn" class="btn" style="width:100%; display:none;">
          Timetable
        </button>
      </div>
@@ -1387,6 +1387,31 @@ body[data-theme="dark"] .table-wrapper th {
 
 
 </div>
+<div id="apkFallbackPopup" class="pdf-popup">
+  <div class="pdf-popup-inner" style="max-width:400px; text-align:center;">
+
+    <h3>Download Started</h3>
+
+    <p style="margin-top:10px; font-size:14px; color:var(--text-secondary);">
+      If the download does not start or fails,
+      you can use this link below.
+    </p>
+
+    <a href="https://drive.google.com/uc?export=download&id=1NDhLE7Hkr_8iykzyY6hFcjizwNdJQTIy"
+       target="_blank"
+       style="display:inline-block; margin-top:12px; color:var(--primary); font-weight:600;">
+       Download apk
+    </a>
+
+    <br><br>
+
+    <button onclick="document.getElementById('apkFallbackPopup').style.display='none'"
+            class="menu-btn">
+      Close
+    </button>
+
+  </div>
+</div>
 <div id="pdfPopup" class="pdf-popup">
   <div class="pdf-popup-inner">
     <h3>PDF Compressor</h3>
@@ -1427,32 +1452,6 @@ body[data-theme="dark"] .table-wrapper th {
 
   </div>
 </div>
-<footer style="margin-top:100px; border-top:1px solid var(--border); background:var(--bg-secondary);">
-  <div style="max-width:1280px; margin:auto; padding:30px 20px; text-align:center;">
-
-    <h3>Student Attendance Dashboard</h3>
-    <p style="color:var(--text-secondary); max-width:700px; margin:10px auto;">
-      A free tool for students to analyze, track, and predict their academic and biometric attendance.
-    </p>
-
-    <div style="margin:20px 0; display:flex; gap:20px; justify-content:center; flex-wrap:wrap;">
-      <a href="about.html">About</a>
-      <a href="privacy.html">Privacy Policy</a>
-      <a href="terms.html">Terms & Conditions</a>
-      <a href="contact.html">Contact</a>
-    </div>
-
-    <p style="font-size:13px; color:var(--text-muted);">
-      © 2026 Attendance Dashboard. All rights reserved.
-    </p>
-
-    <p style="font-size:12px; color:var(--text-muted); margin-top:8px;">
-      This website is not affiliated with any university or institution.
-    </p>
-
-  </div>
-</footer>
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 
@@ -1565,18 +1564,35 @@ document.getElementById("closePdfPopup").onclick = () => {
   document.getElementById("pdfPopup").style.display = "none";
 };
 
-document.getElementById("openRegisterBtn").addEventListener("click", async () => {
-  if (!sessionStorage.getItem("attendance_register")) {
-    alert("Attendance register not loaded yet. Wait for a while.");
+document.getElementById("openRegisterBtn").addEventListener("click", function() {
+  const btn = this;
+
+  // If data is already loaded, open immediately in the same tab
+  if (sessionStorage.getItem("attendance_register")) {
+    window.open("register.html","_blank");
     return;
   }
 
-  // ✅ Move to register page
-  window.location.href = "register.html";
+  // Activate loading state (CSS handles the centering automatically)
+  btn.classList.add("is-loading");
 
-  
-  // OR open in new tab (optional)
-  // window.open("attendance-register.html", "_blank");
+  // Check for the data every 500ms
+  const checkInterval = setInterval(() => {
+    if (sessionStorage.getItem("attendance_register")) {
+      clearInterval(checkInterval);
+      btn.classList.remove("is-loading"); // Remove spinner
+      window.open("register.html","_blank"); 
+    }
+  }, 50);
+
+  // Failsafe: Stop loading after 15 seconds if it fails
+  setTimeout(() => {
+    if (btn.classList.contains("is-loading")) {
+      clearInterval(checkInterval);
+      btn.classList.remove("is-loading");
+      alert("Loading is taking longer than expected. Please check your connection.");
+    }
+  }, 150000); 
 });
 function resetTimetablePopupPosition() {
   const popupInner = document.querySelector("#timetablePopup .pdf-popup-inner");
@@ -1964,7 +1980,6 @@ document.getElementById('loginForm').addEventListener('submit', async e => {
 
   // HIDE LOGIN CARD IMMEDIATELY
   loginCard.style.display = "none";
-  document.getElementById('publicContent').style.display = "none";
   // SHOW ONLY DASHBOARD SKELETON
   document.getElementById('skeletonLoader').style.display = 'grid';
 
@@ -2138,6 +2153,22 @@ function renderAcademic(data,username) {
   data.forEach(sub => T +=Number(sub.attended)||0 );
   data.forEach(sub => tot += Number(sub.total)|| 0 );
   const TT = (T*100/tot).toFixed(2);
+  const target = 0.75;
+
+    let extraMessage = "";
+    let required = 0;
+
+    if (TT < 75) {
+    required = Math.ceil(((target * tot) - T) / (1 - target));
+    required = Math.max(required, 0);
+
+    extraMessage = `Attend ${required} more classes`;
+    } else {
+    required = Math.floor((T - (target * tot)) / target);
+    required = Math.max(required, 0);
+
+    extraMessage = `Can bunk ${required} classes`;
+    }
   // Update stats cards
   const statsGrid = document.getElementById('statsGrid');
     // let statsHtml = `
@@ -2155,16 +2186,32 @@ function renderAcademic(data,username) {
 
     let statsHtml = `
         <div class="stat-card">
-        <div class="stat-card-header">
-            <div>
-            <div class="stat-card-title">Attendance</div>
-            <div class="stat-card-value">${TT}%</div>
-            <div class="stat-card-label">Performance</div>
+            <div class="stat-card-header">
+                <div>
+                    <div class="stat-card-title">Attendance</div>
+                    <div class="stat-card-value">${TT}%</div>
+                    <div class="stat-card-label">Performance</div>
+                </div>
+                <div class="stat-card-icon" 
+                    style="background: ${TT >= 75 ? 'var(--success-light)' : 'var(--danger-light)'}; 
+                            color: ${TT >= 75 ? 'var(--success)' : 'var(--danger)'};">
+                    📚
+                </div>
             </div>
-            <div class="stat-card-icon" style="background: var(--success-light); color: var(--success);">📚</div>
+
+            <!-- 👇 NEW SECTION INSIDE CARD -->
+            <div style="
+                margin-top:14px;
+                padding:10px 12px;
+                border-radius:8px;
+                font-size:13px;
+                font-weight:600;
+                color:${TT >= 75 ? 'var(--success)' : 'var(--danger)'};
+            ">
+                ${extraMessage}
+            </div>
         </div>
-        </div>
-    `;
+        `;
 
     // Continue appending the other cards
     // statsHtml += `
@@ -2294,14 +2341,13 @@ function renderBiometric(data) {
 
 document.getElementById('biometricAttendBtn').addEventListener('click', () => {
   attendCount++;
-  bunkCount = 0;
 
-  let newTotal = totalDays + attendCount;
+  let newTotal = totalDays + attendCount+bunkCount;
   let newPresent = presentCount + attendCount;
 
   let newAttendance = ((newPresent / newTotal) * 100).toFixed(2);
 
-  let message = `If you attend ${attendCount} day(s), your attendance will be ${newAttendance}%. `;
+  let message = `After attending ${attendCount} day(s) and bunking ${bunkCount} day(s), your attendance will be ${newAttendance}%.`;
 
   // Additional logic
   if (newAttendance < 75) {
@@ -2319,14 +2365,13 @@ document.getElementById('biometricAttendBtn').addEventListener('click', () => {
 
 document.getElementById('biometricBunkBtn').addEventListener('click', () => {
   bunkCount++;
-  attendCount = 0;
 
-  let newTotal = totalDays + bunkCount;
-  let newPresent = presentCount;
+  let newTotal = totalDays+attendCount + bunkCount;
+  let newPresent = presentCount+attendCount;
 
   let newAttendance = ((newPresent / newTotal) * 100).toFixed(2);
 
-  let message = `If you bunk ${bunkCount} day(s), your attendance will be ${newAttendance}%. `;
+  let message = `After attending ${attendCount} days and bunking ${bunkCount} days, your attendance will be ${newAttendance}%.`;
 
   // Additional logic
   if (newAttendance < 75) {
